@@ -12,9 +12,11 @@ services:
     container_name: jenkins
     group_add:
       - docker
-    user: jenkins
     environment:
-      - JENKINS_HOME=/var/jenkins_home
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DOCKER_GROUP=docker
+      - DOCKER_GID=999
+    user: root
 
 volumes:
   jenkins_home:
