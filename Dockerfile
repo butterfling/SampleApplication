@@ -1,8 +1,6 @@
 FROM jenkins/jenkins:lts
 
-
 USER root
-
 
 RUN apt-get update && \
     apt-get install -y \
@@ -10,11 +8,19 @@ RUN apt-get update && \
     ca-certificates \
     curl \
     gnupg2 \
-    software-properties-common
+    software-properties-common \
+    docker.io
 
-USER jenkins
+RUN usermod -aG docker jenkins
+
+# Set correct permissions
+RUN mkdir -p /var/jenkins_home/caches && \
+    chown -R jenkins:jenkins /var/jenkins_home && \
+    chmod -R 777 /var/jenkins_home
 
 EXPOSE 8080
 EXPOSE 50000
 
 VOLUME /var/jenkins_home
+
+USER jenkins
